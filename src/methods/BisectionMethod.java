@@ -11,23 +11,16 @@ public class BisectionMethod {
     }
 
     public double minimize(double a, double b, double tolerance){
-        if (points.interpolate(a) * points.interpolate(b) >= 0) {
-            System.out.println("You have not assumed right a and b");
-            return Double.NaN;
+        while ((b - a) > tolerance) {
+            double mid = (a + b) / 2;
+            double fMid = points.interpolate(mid);
+
+            if (points.interpolate((a + mid) / 2) < fMid) {
+                b = mid;
+            } else {
+                a = mid;
+            }
         }
-
-        double c = a;
-        while ((b - a) >= tolerance) {
-            c = (a + b) / 2;
-
-            if (points.interpolate(c) == 0.0)
-                break;
-            else if (points.interpolate(c) * points.interpolate(a) < 0)
-                b = c;
-            else
-                a = c;
-        }
-
-        return c;
+        return (a + b) / 2;
     }
 }
